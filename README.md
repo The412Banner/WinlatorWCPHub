@@ -206,3 +206,5 @@ Freedreno Turnip driver [Mesa](https://mesa3d.org/)
 
 </h4>
 
+---
+<sub>☕ [Support on Ko-fi](https://ko-fi.com/the412banner)</sub>
