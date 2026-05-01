@@ -70,5 +70,11 @@
     "verName": "2604-260429-098c4c5",
     "verCode": "0",
     "remoteUrl": "https://github.com/The412Banner/WinlatorWCPHub/releases/download/FEXCore-Nightly/FEXCore-2604-260429-098c4c5.wcp"
+  },
+  {
+    "type": "FEXCore",
+    "verName": "2604-260501-8ab0075",
+    "verCode": "0",
+    "remoteUrl": "https://github.com/The412Banner/WinlatorWCPHub/releases/download/FEXCore-Nightly/FEXCore-2604-260501-8ab0075.wcp"
   }
 ]
