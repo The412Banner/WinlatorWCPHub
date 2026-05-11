@@ -1,3 +1,5 @@
+[![Discord](https://img.shields.io/badge/Discord-Join%20Server-5865F2?logo=discord&logoColor=white)](https://discord.gg/n8S4G2WZQ4)
+
 <p align="center">
   <img src="./img.png" width="180">
 </p>
@@ -204,3 +206,7 @@ Freedreno Turnip driver [Mesa](https://mesa3d.org/)
 
 </h4>
 
+
+## Community
+
+Join our Discord: https://discord.gg/n8S4G2WZQ4
