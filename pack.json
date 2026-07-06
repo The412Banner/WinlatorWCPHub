@@ -253,6 +253,18 @@
   },
   {
     "type": "DXVK",
+    "verName": "3.0.1-arm64ec",
+    "verCode": "0",
+    "remoteUrl": "https://github.com/Arihany/WinlatorWCPHub/releases/download/DXVK-ARM64EC/dxvk-arm64ec-3.0.1.wcp"
+  },
+  {
+    "type": "DXVK",
+    "verName": "3.0.1-arm64ec-binsem",
+    "verCode": "0",
+    "remoteUrl": "https://github.com/Arihany/WinlatorWCPHub/releases/download/DXVK-ARM64EC/dxvk-arm64ec-3.0.1-binsem.wcp"
+  },
+  {
+    "type": "DXVK",
     "verName": "3.0.1-binsem",
     "verCode": "0",
     "remoteUrl": "https://github.com/Arihany/WinlatorWCPHub/releases/download/DXVK/dxvk-3.0.1-binsem.wcp"
