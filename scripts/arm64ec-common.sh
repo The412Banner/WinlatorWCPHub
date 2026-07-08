@@ -1,13 +1,15 @@
 ARM64EC_CPU_FLAGS=("-march=armv8.2-a" "-mtune=cortex-x3")
-ARM64EC_MESON_FLAGS=("${ARM64EC_CPU_FLAGS[@]}" "-O2" "-fwrapv" "-fno-strict-aliasing")
+# Correctness guards.
+ARM64EC_SAFETY_FLAGS=("-fno-strict-aliasing" "-fwrapv")
+ARM64EC_MESON_FLAGS=("${ARM64EC_CPU_FLAGS[@]}" "-O2" "${ARM64EC_SAFETY_FLAGS[@]}")
 
 arm64ec_join_flags() {
   local IFS=" "
   printf '%s' "$*"
 }
 
-arm64ec_cpu_flags() {
-  arm64ec_join_flags "${ARM64EC_CPU_FLAGS[@]}"
+arm64ec_cmake_flags() {
+  arm64ec_join_flags "${ARM64EC_CPU_FLAGS[@]}" "${ARM64EC_SAFETY_FLAGS[@]}"
 }
 
 arm64ec_meson_flags() {

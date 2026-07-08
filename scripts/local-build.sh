@@ -89,6 +89,10 @@ case "$kind" in
     ;;
 esac
 
+# FEX uses the validated bylaws arm64ec toolchain, NOT mainline.
+FEX_LLVM_MINGW_REPO="bylaws/llvm-mingw"
+FEX_LLVM_MINGW_TAG="20250920"
+
 maybe_relocate_to_native() {
   [[ "${WCP_NATIVE_ACTIVE:-}" == 1 ]] && return 0
   [[ "${WCP_NO_NATIVE:-}" == 1 ]] && return 0
@@ -112,7 +116,11 @@ maybe_relocate_to_native() {
 
   if ! $do_setup && [[ ! -x "$work/.venv/bin/meson" ]]; then
     echo "::notice::Initializing native toolchain/venv in $work (one-time)..."
-    ( cd "$work" && bash scripts/setup-local-llvm-meson.sh )
+    if [[ "$kind" == "fexcore" ]]; then
+      ( cd "$work" && LLVM_MINGW_REPO="$FEX_LLVM_MINGW_REPO" LLVM_MINGW_TAG="$FEX_LLVM_MINGW_TAG" bash scripts/setup-local-llvm-meson.sh )
+    else
+      ( cd "$work" && bash scripts/setup-local-llvm-meson.sh )
+    fi
   fi
 
   local child_args=(--kind "$kind")
@@ -135,15 +143,26 @@ maybe_relocate_to_native
 
 if $do_setup; then
   bash "$ROOT/scripts/install-deps-ubuntu.sh"
-  bash "$ROOT/scripts/setup-local-llvm-meson.sh"
+  if [[ "$kind" == "fexcore" ]]; then
+    LLVM_MINGW_REPO="$FEX_LLVM_MINGW_REPO" LLVM_MINGW_TAG="$FEX_LLVM_MINGW_TAG" \
+      bash "$ROOT/scripts/setup-local-llvm-meson.sh"
+  else
+    bash "$ROOT/scripts/setup-local-llvm-meson.sh"
+  fi
 fi
 
 if [[ -d "$ROOT/.venv/bin" ]]; then
   export PATH="$ROOT/.venv/bin:$PATH"
 fi
 
+fex_toolchain_dir="$ROOT/.toolchains/llvm-mingw-${FEX_LLVM_MINGW_TAG}"
+
 if [[ -n "${TOOLCHAIN_DIR:-}" && -d "$TOOLCHAIN_DIR/bin" ]]; then
   export PATH="$TOOLCHAIN_DIR/bin:$PATH"
+elif [[ "$kind" == "fexcore" && -d "$fex_toolchain_dir/bin" ]]; then
+  # FEX pins the bylaws toolchain.
+  export TOOLCHAIN_DIR="$fex_toolchain_dir"
+  export PATH="$fex_toolchain_dir/bin:$PATH"
 elif [[ -d "$ROOT/.toolchains" ]]; then
   latest_toolchain="$(find "$ROOT/.toolchains" -maxdepth 1 -type d -name 'llvm-mingw-*' | sort -V | tail -n1 || true)"
   if [[ -n "$latest_toolchain" && -d "$latest_toolchain/bin" ]]; then
@@ -153,6 +172,10 @@ elif [[ -d "$ROOT/.toolchains" ]]; then
 elif [[ -d /opt/llvm-mingw/bin ]]; then
   export TOOLCHAIN_DIR="/opt/llvm-mingw"
   export PATH="/opt/llvm-mingw/bin:$PATH"
+fi
+
+if [[ "$kind" == "fexcore" && "${TOOLCHAIN_DIR:-}" != "$fex_toolchain_dir" ]]; then
+  echo "::warning::FEX should build with ${FEX_LLVM_MINGW_REPO}@${FEX_LLVM_MINGW_TAG}, but active toolchain is '${TOOLCHAIN_DIR:-<none>}'. Run: scripts/local-build.sh --setup --kind fexcore" >&2
 fi
 
 need_cmd git
@@ -661,7 +684,7 @@ build_fexcore() {
   mkdir -p out
 
   local arch_flags
-  arch_flags="$(arm64ec_cpu_flags)"
+  arch_flags="$(arm64ec_cmake_flags)"
 
   fex_build_arch() {
     local triple="$1" dest="$2"
