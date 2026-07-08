@@ -84,7 +84,7 @@ normalize_github_version_ref() {
       fi
       ;;
     fexcore)
-      # FEX tags look like FEX-2605; accept bare "2605" too.
+      # Accept bare 2605 too.
       if [[ "$raw" =~ ^[0-9] ]]; then
         printf 'FEX-%s\n' "$raw"
       else

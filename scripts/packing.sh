@@ -46,6 +46,16 @@ source "$PROFILE_SH"
 : "${WCP_TYPE:?WCP_TYPE not set in profile}"
 : "${WCP_DESC:?WCP_DESC not set in profile}"
 
+wcp_should_strip() {
+  local f="$1"
+  [[ "$WCP_TYPE" == "FEXCore" ]] && return 1
+  if have_cmd llvm-readobj \
+     && llvm-readobj -h "$f" 2>/dev/null | grep -qiE 'Machine:.*ARM64EC'; then
+    return 1
+  fi
+  return 0
+}
+
 if [[ -n "${WCP_VERSION_CODE:-}" ]]; then
   FINAL_VER_CODE="$WCP_VERSION_CODE"
 else
@@ -134,10 +144,12 @@ if [[ -n "${WCP_SINGLE_BIN_SOURCE:-}" ]]; then
   chmod u+w "$WCP_DIR/$BIN_NAME" 2>/dev/null || true
 
   if [[ "$HAVE_LLVM_STRIP" -eq 1 ]]; then
-    # DLLs get the same aggressive strip as the graphics path; PE exports live
-    # in the export directory, not the symbol table, so --strip-all is safe.
     if [[ "${BIN_NAME,,}" == *.dll ]]; then
-      llvm-strip --strip-all "$WCP_DIR/$BIN_NAME" 2>/dev/null || true
+      if wcp_should_strip "$WCP_DIR/$BIN_NAME"; then
+        llvm-strip --strip-all "$WCP_DIR/$BIN_NAME" 2>/dev/null || true
+      else
+        echo "Preserving symbols for $BIN_NAME (FEX/ARM64EC: strip disabled)."
+      fi
     else
       llvm-strip --strip-unneeded "$WCP_DIR/$BIN_NAME" 2>/dev/null || true
     fi
@@ -263,7 +275,13 @@ fi
 echo "Stripping symbols..."
 if [[ "$HAVE_LLVM_STRIP" -eq 1 ]]; then
   find "$WCP_DIR" -iname '*.dll' -print0 | xargs -0 -r chmod u+w || true
-  find "$WCP_DIR" -iname '*.dll' -print0 | xargs -0 -r llvm-strip --strip-all || true
+  while IFS= read -r -d '' dll; do
+    if wcp_should_strip "$dll"; then
+      llvm-strip --strip-all "$dll" 2>/dev/null || true
+    else
+      echo "Preserving symbols for ${dll##*/} (FEX/ARM64EC: strip disabled)."
+    fi
+  done < <(find "$WCP_DIR" -iname '*.dll' -print0)
 else
   echo "Skipping DLL strip (llvm-strip not available)."
 fi

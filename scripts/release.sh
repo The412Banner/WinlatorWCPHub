@@ -12,6 +12,13 @@ REF="${REF:-}"
 
 NOTES="${NOTES:-RELEASE_NOTES.md}"
 BODY="${BODY:-}"
+BODY_KEYS="${BODY_KEYS:-}"
+
+if [[ -z "$BODY" && -n "$BODY_KEYS" ]]; then
+  source "$(dirname "$0")/release-notes.sh"
+  IFS=' ' read -ra _note_keys <<<"$BODY_KEYS"
+  BODY="$(render_notes "${_note_keys[@]}")"
+fi
 
 : >"$NOTES"
 if [[ -n "$BODY" ]]; then
