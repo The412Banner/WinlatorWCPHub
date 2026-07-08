@@ -92,11 +92,8 @@ jobs:
         run: bash ./scripts/install-deps-ubuntu.sh
 
       - name: Setup Build Env
-        # FEX uses the vendor-validated bylaws arm64ec toolchain, NOT mainline
-        # llvm-mingw. libarm64ecfex.dll is the ABI bridge itself and FEX's hot
-        # path is JIT-generated at runtime, so a newer host compiler buys little
-        # while immature arm64ec codegen risks a lot. Graphics builds (dxvk/
-        # vkd3d) stay on mainline latest in their own workflows.
+        # FEX uses the vendor-validated bylaws arm64ec toolchain.
+        # PPA+Proton flags.
         env:
           LLVM_MINGW_REPO: bylaws/llvm-mingw
           LLVM_MINGW_TAG:  "20250920"
