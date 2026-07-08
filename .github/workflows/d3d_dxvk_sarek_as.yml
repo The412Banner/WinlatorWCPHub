@@ -144,9 +144,7 @@ jobs:
           REL_TAG:        ${{ env.REL_TAG_STABLE }} 
           VERSION_PREFIX: "${{ env.UNI_KIND }}-"
           ARTIFACT_GLOB:  "out/${{ env.UNI_KIND }}-*.wcp"
-          BODY: |
-            - General-purpose x64/x86 build
-            - Dyasync can be disabled by `DXVK_DISABLE_DYASYNC=1`
+          BODY_KEYS: "general dyasync"
         run: bash ./scripts/release.sh
 
   maintenance:

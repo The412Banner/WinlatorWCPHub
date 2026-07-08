@@ -92,6 +92,14 @@ jobs:
         run: bash ./scripts/install-deps-ubuntu.sh
 
       - name: Setup Build Env
+        # FEX uses the vendor-validated bylaws arm64ec toolchain, NOT mainline
+        # llvm-mingw. libarm64ecfex.dll is the ABI bridge itself and FEX's hot
+        # path is JIT-generated at runtime, so a newer host compiler buys little
+        # while immature arm64ec codegen risks a lot. Graphics builds (dxvk/
+        # vkd3d) stay on mainline latest in their own workflows.
+        env:
+          LLVM_MINGW_REPO: bylaws/llvm-mingw
+          LLVM_MINGW_TAG:  "20250920"
         run: bash ./scripts/setup-llvm-meson.sh
 
       - name: Checkout Source
@@ -126,7 +134,7 @@ jobs:
               local dest="$2"
               local build_dir="build-${triple}"
               local arch_flags
-              arch_flags="$(arm64ec_cpu_flags)"
+              arch_flags="$(arm64ec_cmake_flags)"
 
               rm -rf "$build_dir"
               mkdir "$build_dir"
@@ -196,8 +204,7 @@ jobs:
           REPO:           ${{ github.repository }}
           ARTIFACT_GLOB:  "artifacts/${{ env.FILENAME }}"
           VERSION_PREFIX: "FEXCore-" ###
-          BODY: |
-            - Common: Uses Valve-style build flags to improve performance. Compatibility may be reduced.
+          BODY_KEYS: "common"
         run: bash ./scripts/release.sh
 
   maintenance:

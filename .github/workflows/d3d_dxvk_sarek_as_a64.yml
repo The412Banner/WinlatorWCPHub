@@ -137,10 +137,7 @@ jobs:
           REL_TAG:        ${{ env.REL_TAG_STABLE }} 
           VERSION_PREFIX: "${{ env.UNI_KIND }}-"
           ARTIFACT_GLOB:  "out/${{ env.UNI_KIND }}-*.wcp"
-          BODY: |
-            - For FEX only
-            - Common: Uses Valve-style build flags to improve performance. Compatibility may be reduced.
-            - Dyasync can be disabled by `DXVK_DISABLE_DYASYNC=1`
+          BODY_KEYS: "fexonly common dyasync"
         run: bash ./scripts/release.sh
 
   maintenance:

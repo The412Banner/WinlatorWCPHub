@@ -151,10 +151,7 @@ jobs:
           REL_TAG:        ${{ env.REL_TAG_STABLE }} 
           VERSION_PREFIX: "${{ env.UNI_KIND }}-"
           ARTIFACT_GLOB:  "out/${{ env.UNI_KIND }}-*.wcp"
-          BODY: |
-            - General-purpose x64/x86 build
-            - pre-reg: Last version before the performance drop on Turnip driver
-            - binsem: Avoids Turnip performance loss without env vars. May be unstable.
+          BODY_KEYS: "general prereg binsem"
         run: bash ./scripts/release.sh
 
   maintenance:

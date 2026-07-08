@@ -193,11 +193,7 @@ jobs:
           REL_TAG:        ${{ env.REL_TAG_STABLE }} 
           VERSION_PREFIX: "${{ env.UNI_KIND }}-"
           ARTIFACT_GLOB:  "out/${{ env.UNI_KIND }}-*.wcp"
-          BODY: |
-            - For FEX only
-            - Common: Uses Valve-style build flags to improve performance. Compatibility may be reduced.
-            - pre-reg: Last version before the performance drop on Turnip driver
-            - binsem: Avoids Turnip performance loss without env vars. May be unstable.
+          BODY_KEYS: "fexonly common prereg binsem"
         run: bash ./scripts/release.sh
 
   maintenance:
