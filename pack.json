@@ -229,6 +229,12 @@
   },
   {
     "type": "DXVK",
+    "verName": "3.0.2",
+    "verCode": "0",
+    "remoteUrl": "https://github.com/The412Banner/WinlatorWCPHub/releases/download/DXVK/dxvk-3.0.2.wcp"
+  },
+  {
+    "type": "DXVK",
     "verName": "3.0.2-arm64ec",
     "verCode": "0",
     "remoteUrl": "https://github.com/The412Banner/WinlatorWCPHub/releases/download/DXVK-ARM64EC/dxvk-arm64ec-3.0.2.wcp"
@@ -238,6 +244,12 @@
     "verName": "3.0.2-arm64ec-binsem",
     "verCode": "0",
     "remoteUrl": "https://github.com/The412Banner/WinlatorWCPHub/releases/download/DXVK-ARM64EC/dxvk-arm64ec-3.0.2-binsem.wcp"
+  },
+  {
+    "type": "DXVK",
+    "verName": "3.0.2-binsem",
+    "verCode": "0",
+    "remoteUrl": "https://github.com/The412Banner/WinlatorWCPHub/releases/download/DXVK/dxvk-3.0.2-binsem.wcp"
   },
   {
     "type": "FEXCore",
