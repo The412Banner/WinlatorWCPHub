@@ -157,6 +157,12 @@
   },
   {
     "type": "DXVK",
+    "verName": "2.7.1-arm64ec-proton11-a676404",
+    "verCode": "0",
+    "remoteUrl": "https://github.com/The412Banner/WinlatorWCPHub/releases/download/DXVK-ARM64EC/dxvk-arm64ec-2.7.1-proton11-a676404.wcp"
+  },
+  {
+    "type": "DXVK",
     "verName": "2.7.1-proton11-a676404",
     "verCode": "0",
     "remoteUrl": "https://github.com/The412Banner/WinlatorWCPHub/releases/download/DXVK/dxvk-2.7.1-proton11-a676404.wcp"
@@ -214,6 +220,12 @@
     "verName": "3.1",
     "verCode": "0",
     "remoteUrl": "https://github.com/The412Banner/WinlatorWCPHub/releases/download/DXVK/dxvk-3.1.wcp"
+  },
+  {
+    "type": "DXVK",
+    "verName": "3.1-arm64ec",
+    "verCode": "0",
+    "remoteUrl": "https://github.com/The412Banner/WinlatorWCPHub/releases/download/DXVK-ARM64EC/dxvk-arm64ec-3.1.wcp"
   },
   {
     "type": "FEXCore",
